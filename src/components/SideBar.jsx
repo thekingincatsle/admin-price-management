@@ -1,5 +1,12 @@
 import React from "react";
-import { IoMdHome, IoMdLogOut, IoMdPeople } from "react-icons/io";
+import {
+  IoMdHome,
+  IoMdLogOut,
+  IoMdPeople,
+  IoIosBody,
+  IoIosJournal,
+  IoIosFiling,
+} from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 
 const SideBar = () => {
@@ -14,6 +21,13 @@ const SideBar = () => {
         <div className="text-md">Trang chủ</div>
       </Link>
       <Link
+        to="/family"
+        className="flex items-center w-full py-3 px-8 cursor-pointer hover:bg-cyan-500 duration-200"
+      >
+        <IoIosFiling size={25} className="mr-8" />
+        <div className="text-md">Danh sách hộ khẩu</div>
+      </Link>
+      <Link
         to="/register-list"
         className="flex items-center w-full py-3 px-8 cursor-pointer hover:bg-cyan-500 duration-200"
       >
@@ -24,8 +38,15 @@ const SideBar = () => {
         to="/success-form"
         className="flex items-center w-full py-3 px-8 cursor-pointer hover:bg-cyan-500 duration-200"
       >
-        <IoMdPeople size={25} className="mr-8" />
-        <div className="text-md">Danh sách nhận thưởng</div>
+        <IoIosJournal size={35} className="mr-8" />
+        <div className="text-md">Danh sách nhận thưởng HSG</div>
+      </Link>
+      <Link
+        to="/children"
+        className="flex items-center w-full py-3 px-8 cursor-pointer hover:bg-cyan-500 duration-200"
+      >
+        <IoIosBody size={25} className="mr-8" />
+        <div className="text-md">Danh sách thiếu nhi</div>
       </Link>
       <div
         className="flex items-center w-full py-3 px-8 cursor-pointer hover:bg-cyan-500 duration-200"

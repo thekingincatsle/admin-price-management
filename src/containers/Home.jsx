@@ -5,6 +5,9 @@ import { Routes, Route } from "react-router-dom";
 import Landing from "./Landing";
 import RegisterList from "../components/RegisterList";
 import SuccessList from "../components/SuccessList";
+import ChildrenList from "../components/ChildrenList";
+import FamilyList from "../components/FamilyList";
+import Members from "./Members";
 import FormDetail from "./FormDetail";
 import { Link } from "react-router-dom";
 
@@ -23,7 +26,10 @@ const Home = () => {
               <Route path="/*" element={<Landing />}></Route>
               <Route path="/register-list" element={<RegisterList />}></Route>
               <Route path="/success-form" element={<SuccessList />}></Route>
+              <Route path="/children" element={<ChildrenList />}></Route>
+              <Route path="/family" element={<FamilyList />}></Route>
               <Route path="/form-detail/:id" element={<FormDetail />}></Route>
+              <Route path="/member/:idShk" element={<Members />}></Route>
             </Routes>
           </div>
         </div>
