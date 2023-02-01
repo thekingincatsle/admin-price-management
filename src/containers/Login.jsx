@@ -16,7 +16,7 @@ const Login = () => {
       if (!res.validated) {
         alert(res.message);
       } else {
-        localStorage.setItem("admin", JSON.stringify(res.canBoModel));
+        localStorage.setItem("admin", JSON.stringify(res.canBo));
         navigate("/");
         alert(res.message);
       }
@@ -41,7 +41,7 @@ const Login = () => {
                           alt="logo"
                         />
                         <h4 className="text-xl font-semibold mt-1 mb-12 pb-1">
-                          Quản lý phần thưởng
+                          Quản lý hộ khẩu và phần thưởng
                         </h4>
                       </div>
                       <form>
