@@ -38,6 +38,9 @@ function getByFamilyId(familyId) {
 function getByStatus(status) {
   return AXIOS.get(`${rootEndPoint}/get-by-status?status=${status}`);
 }
+function getByAge(age) {
+  return AXIOS.get(`${rootEndPoint}/get-by-age?age=${age}`);
+}
 
 function getAcceptedByName(name) {
   return AXIOS.get(`${rootEndPoint}/get-accepted-form-by-name?name=${name}`);
@@ -53,8 +56,13 @@ function getAcceptedByAdmin(adminName) {
   );
 }
 function getAcceptedByTitle(title) {
-  return AXIOS.get(`${rootEndPoint}/get-accepted-form-by-admin?name=${title}`);
+  return AXIOS.get(`${rootEndPoint}/get-accepted-form-by-title?name=${title}`);
 }
+function getAcceptedByAge(age) {
+  return AXIOS.get(`${rootEndPoint}/get-accepted-form-by-age?name=${age}`);
+}
+
+
 export {
   getAllRegisterForm,
   getFormById,
@@ -62,6 +70,7 @@ export {
   getAcceptedForm,
   getSortedRegisterForm,
   getByName,
+  getByAge,
   getByFamilyId,
   getByStatus,
   getAcceptedByName,
@@ -69,4 +78,5 @@ export {
   getAcceptedByTitle,
   getAcceptedByFamilyId,
   getSortedAcceptedRegisterForm,
+  getAcceptedByAge,
 };

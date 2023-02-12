@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getAllFamily } from "../service/FamilyService";
+import { getAllFamily, deleteFamily } from "../service/FamilyService";
 import { useNavigate } from "react-router-dom";
+import Title from "./Title";
+import FamilyAddModal from "./FamilyAddModal";
+import Modal from "./Modal";
 
 const FamilyList = () => {
   const navigate = useNavigate();
@@ -8,8 +11,16 @@ const FamilyList = () => {
   useEffect(() => {
     getAllFamily().then((res) => setFamilies(res.data));
   }, []);
+  async function handleConfirmDelete(family) {
+    console.log(family);
+    await deleteFamily(family);
+    alert(`Xoá thành công hộ gia đình ${family.idSoHoKhau}`);
+    window.location.reload(false);
+  }
   return (
     <div className="w-full">
+      <Title text="Danh sách hộ khẩu" />
+      <FamilyAddModal />
       <div class="flex flex-col">
         <div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
           <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
@@ -47,6 +58,12 @@ const FamilyList = () => {
                     >
                       Danh sách thành viên
                     </th>
+                    <th
+                      scope="col"
+                      class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                    >
+                      Xoá
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -73,6 +90,15 @@ const FamilyList = () => {
                         >
                           Thành viên
                         </button>
+                      </td>
+                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <Modal
+                          text="Xoá"
+                          deleteTarget={family}
+                          message={`Bạn chắc chắn muốn xoá hộ gia đình ${family.idSoHoKhau} cùng tất
+                          cả thành viên của hộ này?`}
+                          handleConfirm={handleConfirmDelete}
+                        />
                       </td>
                     </tr>
                   ))}

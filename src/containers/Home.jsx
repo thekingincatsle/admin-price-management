@@ -21,7 +21,7 @@ const Home = () => {
           <div className="w-1/6">
             <SideBar />
           </div>
-          <div className="flex flex-col items-center w-5/6 overflow-scroll">
+          <div className="flex flex-col items-center w-5/6 overflow-scroll pb-20">
             <Routes>
               <Route path="/*" element={<Landing />}></Route>
               <Route path="/register-list" element={<RegisterList />}></Route>

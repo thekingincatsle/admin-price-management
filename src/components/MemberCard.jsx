@@ -1,6 +1,13 @@
 import React from "react";
+import Modal from "./Modal";
+import { deleteMember } from "../service/MemberService";
 
 const MemberCard = ({ member }) => {
+  async function handleConfirmDelete(deleteTargetMember) {
+    await deleteMember(deleteTargetMember);
+    alert(`Xoá thành công thành viên ${deleteTargetMember.ten}`);
+    window.location.reload(false);
+  }
   return (
     <div className="bg-cyan-600 my-5 h-64 w-full flex px-5 py-5 rounded-xl justify-between items-center">
       <div className="w-25 h-25 bg-cyan-100 overflow-hidden rounded-xl">
@@ -10,9 +17,19 @@ const MemberCard = ({ member }) => {
         />
       </div>
       <div className="bg-cyan-200 w-2/3 h-full rounded-xl flex flex-col justify-center gap-5 px-5">
-        <div>
-          <div className="text-sm"> Họ và tên</div>
-          <div className="text-2xl">{member.ten}</div>
+        <div className="flex justify-between">
+          <div>
+            <div className="text-sm"> Họ và tên</div>
+            <div className="text-2xl">{member.ten}</div>
+          </div>
+          <div>
+            <Modal
+              text="Xoá"
+              deleteTarget={member}
+              message={`Bạn chắc chắn muốn xoá thành viên ${member.ten} trong hộ gia đình ${member.hoGiaDinh.idSoHoKhau}`}
+              handleConfirm={handleConfirmDelete}
+            />
+          </div>
         </div>
         <div className="flex">
           <div className="w-1/2 flex flex-col gap-3">

@@ -8,5 +8,14 @@ function getChildren() {
 function getMembersByIdShk(idShk) {
   return AXIOS.get(`${rootEndPoint}/get-by-id-shk?id_shk=${idShk}`);
 }
+function addMember(member) {
+  return AXIOS.post(`${rootEndPoint}/add`, member);
+}
 
-export { getChildren, getMembersByIdShk };
+function deleteMember(member) {
+  return AXIOS.delete(`${rootEndPoint}/delete`, {
+    data: member,
+  });
+}
+
+export { getChildren, getMembersByIdShk, addMember, deleteMember };

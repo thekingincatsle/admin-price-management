@@ -5,10 +5,11 @@ import {
   getByName,
   getByFamilyId,
   getByStatus,
+  getByAge,
 } from "../service/RegisterFormService";
 import { useNavigate } from "react-router-dom";
 import { onlyUnique } from "../utils";
-
+import Title from "./Title";
 const RegisterList = () => {
   const sortFieldEnum = {
     name: "ten",
@@ -21,6 +22,7 @@ const RegisterList = () => {
     desc: "desc",
   };
   const uniqueFamilyIdList = useRef([]);
+  const uniqueAge = useRef([]);
   const uniqueStatus = ["Đang chờ", "Xác nhận", "Từ chối"];
 
   const navigate = useNavigate();
@@ -30,12 +32,19 @@ const RegisterList = () => {
   const [nameFilter, setNameFilter] = useState("");
   const [familyIdFilter, setFamilyIdFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [ageFilter, setAgeFilter] = useState("");
   useEffect(() => {
     getAllRegisterForm().then((res) => {
       setRegisterForm(res.data);
       uniqueFamilyIdList.current = res.data
         .map(
           (registerForm) => registerForm.hocSinh.thanhVien.hoGiaDinh.idSoHoKhau
+        )
+        .filter(onlyUnique);
+      uniqueAge.current = res.data
+        .map(
+          (registerForm) =>
+            new Date().getFullYear() - registerForm.hocSinh.thanhVien.namSinh
         )
         .filter(onlyUnique);
     });
@@ -72,10 +81,15 @@ const RegisterList = () => {
   }
   function handleStatusFilter(e) {
     setStatusFilter(e.target.value);
-    getByStatus(e.target.value).then((res) => setStatusFilter(res.data));
+    getByStatus(e.target.value).then((res) => setRegisterForm(res.data));
+  }
+  function handleAgeFilter(e) {
+    setAgeFilter(e.target.value);
+    getByAge(e.target.value).then((res) => setRegisterForm(res.data));
   }
   return (
     <div className="w-full">
+      <Title text="Danh sách đăng kí nhận thưởng học sinh giỏi" />
       <div className="flex">
         <div className="w-1/4 flex flex-col px-5 py-5 gap-3 ">
           <div className="font-bold text-center bg-cyan-200 w-1/3 px-3 py-1 rounded-lg self-center mb-3">
@@ -95,7 +109,7 @@ const RegisterList = () => {
                 --None--
               </option>
               <option value={sortFieldEnum.name}>Tên</option>
-              <option value={sortFieldEnum.age}>Năm sinh</option>
+              <option value={sortFieldEnum.age}>Tuổi</option>
               <option value={sortFieldEnum.familyId}>Id sổ hộ khẩu</option>
               <option value={sortFieldEnum.status}>Trạng thái</option>
             </select>
@@ -121,52 +135,88 @@ const RegisterList = () => {
           <div className="font-bold text-center bg-cyan-200 w-1/3 px-3 py-2 rounded-lg self-center">
             Lọc dữ liệu
           </div>
-          <div className="w-1/2 px-5 flex flex-col gap-3">
-            <div class="w-full px-3">
-              <label for="name-filter" class="font-bold">
-                Tìm theo tên
-              </label>
-              <input
-                type="text"
-                id="name-filter"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                value={nameFilter}
-                onChange={handleNameFilter}
-              />
+          <div className="flex justify-center">
+            <div className="w-1/2 px-5 flex flex-col items-start gap-3">
+              <div class="w-full">
+                <label for="name-filter" class="font-bold">
+                  Tìm theo tên
+                </label>
+                <input
+                  type="text"
+                  id="name-filter"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  value={nameFilter}
+                  onChange={handleNameFilter}
+                />
+              </div>
+              <div>
+                <label for="name-filter" class="font-bold">
+                  Tìm theo id sổ hộ khẩu
+                </label>
+                <select
+                  id="name"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  value={familyIdFilter}
+                  onChange={handleFamilyIdFilter}
+                >
+                  {uniqueFamilyIdList.current.map((familyId) => (
+                    <option value={familyId} key={familyId}>
+                      {familyId}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-            <div>
-              <label for="name-filter" class="font-bold">
-                Tìm theo id sổ hộ khẩu
-              </label>
-              <select
-                id="name"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                value={familyIdFilter}
-                onChange={handleFamilyIdFilter}
-              >
-                {uniqueFamilyIdList.current.map((familyId) => (
-                  <option value={familyId} key={familyId}>
-                    {familyId}
-                  </option>
-                ))}
-              </select>
+            <div className="w-1/2 px-5 flex flex-col gap-3">
+              <div>
+                <label for="name-filter" class="font-bold">
+                  Tìm theo trạng thái xác nhận
+                </label>
+                <select
+                  id="name"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  value={statusFilter}
+                  onChange={handleStatusFilter}
+                >
+                  {uniqueStatus.map((status) => (
+                    <option value={status} key={status}>
+                      {status}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label for="name-filter" class="font-bold">
+                  Tìm theo tuổi
+                </label>
+                <select
+                  id="name"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  value={ageFilter}
+                  onChange={handleAgeFilter}
+                >
+                  {uniqueAge.current.map((age) => (
+                    <option value={age} key={age}>
+                      {age}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-          </div>
-          <div className="w-1/2 px-5 flex flex-col gap-3">
-            <select
-              id="name"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              value={statusFilter}
-              onChange={handleStatusFilter}
-            >
-              {uniqueStatus.map((status) => (
-                <option value={status} key={status}>
-                  {status}
-                </option>
-              ))}
-            </select>
           </div>
         </div>
+      </div>
+      <div>
+        <button
+          class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-5"
+          onClick={() => {
+            getAllRegisterForm().then((res) => {
+              setRegisterForm(res.data);
+            });
+          }}
+        >
+          Đặt lại
+        </button>
       </div>
 
       <div class="flex flex-col">
